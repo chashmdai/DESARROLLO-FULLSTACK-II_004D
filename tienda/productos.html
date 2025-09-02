@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <title>Tienda — Productos</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="../assets/css/tienda.css" rel="stylesheet">
+</head>
+<body>
+  <header class="site-header"></header>
+
+  <main class="container">
+    <h1>Productos</h1>
+
+    <div class="toolbar">
+      <div class="search">
+        <span aria-hidden="true">🔎</span>
+        <input id="q" type="text" placeholder="Buscar por id, nombre o categoría…" aria-label="Buscar productos">
+      </div>
+      <span class="spacer"></span>
+      <a class="link-cart" href="./carrito.html">Ver carrito <span id="cartCountTop" class="badge">0</span></a>
+    </div>
+
+    <div id="empty" class="muted" style="display:none">No hay productos disponibles.</div>
+
+    <section id="grid" class="grid"></section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">© Nexbyte v3</div>
+  </footer>
+
+  <script src="../assets/js/datos.js"></script>
+  <script src="../assets/js/carrito.js"></script>
+  <script src="../assets/js/layout.js"></script>
+  <script src="../assets/js/productos.js"></script>
+</body>
+</html>
