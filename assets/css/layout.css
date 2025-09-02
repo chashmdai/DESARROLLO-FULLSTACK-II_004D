@@ -1,0 +1,21 @@
+header{
+  position:sticky;
+  top:0;
+  z-index:10;
+  background:rgba(9,10,15,.85);
+  backdrop-filter:saturate(140%) blur(8px);
+  border-bottom:1px solid #1f2230
+}
+
+.nav{display:flex;align-items:center;justify-content:space-between;gap:16px}
+.nav__left,.nav__center,.nav__right{display:flex;align-items:center;gap:12px}
+.nav__brand{font-weight:800;letter-spacing:.3px}
+.nav a{padding:8px 10px;border-radius:10px}
+.nav a.active,.nav a:hover{background:#141726}
+
+.badge{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:999px;background:#1a1d27;color:var(--text)}
+
+main{min-height:70vh}
+
+footer{border-top:1px solid #1f2230;background:#0c0d14;color:var(--muted);padding:24px}
+footer a{color:var(--muted)}
