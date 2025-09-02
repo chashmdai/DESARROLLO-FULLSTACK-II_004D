@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>NexByte — Admin Productos</title>
+  <link href="../assets/css/base.css" rel="stylesheet">
+  <link href="../assets/css/layout.css" rel="stylesheet">
+  <link href="../assets/css/components.css" rel="stylesheet">
+  <link href="../assets/css/admin.css" rel="stylesheet">
+</head>
+<body>
+  <div id="admin-wrapper">
+    <section class="card">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+        <h1>Productos</h1>
+        <a class="btn" href="producto-nuevo.html">Nuevo producto</a>
+      </div>
+      <table class="table" id="admin-products">
+        <thead>
+          <tr><th>ID</th><th>Nombre</th><th>Precio</th><th>Stock</th><th>Categoría</th><th></th></tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </section>
+  </div>
+
+  <script src="../assets/js/core.js"></script>
+  <script src="../assets/js/seeds.js"></script>
+  <script src="../assets/js/utils/format.js"></script>
+  <script src="../assets/js/services/ProductService.js"></script>
+  <script src="../assets/js/controllers/AdminProductsController.js"></script>
+  <script src="../assets/js/layout-admin.js"></script>
+</body>
+</html>

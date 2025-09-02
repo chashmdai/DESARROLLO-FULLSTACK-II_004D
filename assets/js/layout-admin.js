@@ -1,6 +1,6 @@
 (() => {
-  const wrap = document.getElementById("admin-wrapper");
-  if (!wrap) return;
+  const host = document.getElementById("admin-wrapper");
+  if (!host) return;
 
   let path = location.pathname.split("/").pop();
   if (!path || path === "/") path = "index.html";
@@ -18,10 +18,10 @@
 
   const main = document.createElement("main");
   main.className = "main";
-  while (wrap.firstChild) main.appendChild(wrap.firstChild);
+  while (host.firstChild) main.appendChild(host.firstChild);
 
   const shell = document.createElement("div");
   shell.className = "wrapper";
   shell.append(aside, main);
-  wrap.replaceWith(shell);
+  host.replaceWith(shell);
 })();

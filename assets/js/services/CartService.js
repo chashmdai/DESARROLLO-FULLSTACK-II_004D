@@ -23,6 +23,6 @@ NB.CartService = {
   },
   clear(){ NB.state.cart = []; return this.save(); },
   count(){ return NB.state.cart.reduce((a,b)=>a+(parseInt(b.qty,10)||0),0); },
-  total(){ return NB.state.cart.reduce((sum,i)=>{ const p=NB.ProductService.byId(i.productId); return sum + ((p?.precio||0)*(parseInt(i.qty,10)||0)); },0); },
+  total(){ return NB.state.cart.reduce((s,i)=>{ const p=NB.ProductService.byId(i.productId); return s+((p?.precio||0)*(parseInt(i.qty,10)||0)); },0); },
   items(){ return NB.state.cart.map(i=>({ product: NB.ProductService.byId(i.productId), qty: parseInt(i.qty,10)||0 })); }
 };

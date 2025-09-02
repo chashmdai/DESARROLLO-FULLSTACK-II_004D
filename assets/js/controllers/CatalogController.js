@@ -5,8 +5,8 @@
   const products = NB.ProductService.all();
   grid.innerHTML = products.map(p => `
     <div class="card">
-      <img src="${p.imagenes[0]||''}" alt="${p.nombre}">
-      <div class="card__title">${p.nombre}</div>
+      <div style="height:160px;background:rgba(255,255,255,.04);border-radius:10px;margin-bottom:8px"></div>
+      <div class="card__title"><a href="./detalle-producto.html?id=${p.id}">${p.nombre}</a></div>
       <div class="card__price">${NB.format.price(p.precio)}</div>
       <button class="btn" data-id="${p.id}">Añadir</button>
     </div>

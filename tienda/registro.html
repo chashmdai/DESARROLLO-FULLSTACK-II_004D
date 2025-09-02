@@ -11,31 +11,37 @@
 </head>
 <body>
   <main class="container">
-    <h1>Registro</h1>
+    <h1>Registro de usuario</h1>
     <form id="register-form" class="card grid cols-2" novalidate>
       <div class="field">
-        <label>Nombre</label>
+        <label>Nombre *</label>
         <input class="form-control" name="nombre" required>
+        <div class="hint" role="status" id="hint-nombre"></div>
       </div>
       <div class="field">
         <label>Teléfono</label>
-        <input class="form-control" name="telefono">
+        <input class="form-control" name="telefono" placeholder="+56 9 XXXX XXXX">
+        <div class="hint" role="status" id="hint-telefono"></div>
       </div>
       <div class="field">
-        <label>Email</label>
-        <input class="form-control" name="email">
+        <label>Email *</label>
+        <input class="form-control" name="email" required>
+        <div class="hint" role="status" id="hint-email"></div>
       </div>
       <div class="field">
-        <label>Confirmar Email</label>
-        <input class="form-control" name="email2">
+        <label>Confirmar Email *</label>
+        <input class="form-control" name="email2" required>
+        <div class="hint" role="status" id="hint-email2"></div>
       </div>
       <div class="field">
-        <label>Contraseña</label>
-        <input class="form-control" type="password" name="pass">
+        <label>Contraseña *</label>
+        <input class="form-control" type="password" name="pass" required>
+        <div class="hint" role="status" id="hint-pass"></div>
       </div>
       <div class="field">
-        <label>Confirmar Contraseña</label>
-        <input class="form-control" type="password" name="pass2">
+        <label>Confirmar Contraseña *</label>
+        <input class="form-control" type="password" name="pass2" required>
+        <div class="hint" role="status" id="hint-pass2"></div>
       </div>
       <div>
         <button class="btn" type="submit">Registrar</button>

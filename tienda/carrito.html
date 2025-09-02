@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>NexByte — Productos</title>
+  <title>NexByte — Carrito</title>
   <link href="../assets/css/base.css" rel="stylesheet">
   <link href="../assets/css/layout.css" rel="stylesheet">
   <link href="../assets/css/components.css" rel="stylesheet">
@@ -11,8 +11,19 @@
 </head>
 <body>
   <main class="container">
-    <h1>Productos</h1>
-    <div id="catalog-grid" class="grid cols-4"></div>
+    <h1>Carrito</h1>
+    <div class="table-wrap">
+      <table class="table" id="cart-table">
+        <thead>
+          <tr><th>Producto</th><th>Cantidad</th><th>Precio</th><th>Total</th><th></th></tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-top:12px">
+        <button class="btn" id="clear">Vaciar carrito</button>
+        <div id="grand-total" style="font-weight:800;font-size:1.2rem"></div>
+      </div>
+    </div>
   </main>
 
   <script src="../assets/js/core.js"></script>
@@ -21,7 +32,7 @@
   <script src="../assets/js/services/StorageService.js"></script>
   <script src="../assets/js/services/ProductService.js"></script>
   <script src="../assets/js/services/CartService.js"></script>
-  <script src="../assets/js/controllers/CatalogController.js"></script>
+  <script src="../assets/js/controllers/CartPageController.js"></script>
   <script src="../assets/js/layout.js"></script>
 </body>
 </html>

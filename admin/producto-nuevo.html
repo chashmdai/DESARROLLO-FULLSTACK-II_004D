@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>NexByte — Admin Nuevo Producto</title>
+  <link href="../assets/css/base.css" rel="stylesheet">
+  <link href="../assets/css/layout.css" rel="stylesheet">
+  <link href="../assets/css/components.css" rel="stylesheet">
+  <link href="../assets/css/admin.css" rel="stylesheet">
+</head>
+<body>
+  <div id="admin-wrapper">
+    <section class="card">
+      <h1 id="form-title">Producto</h1>
+      <form id="product-form" class="grid cols-2">
+        <div class="field">
+          <label>Nombre *</label>
+          <input class="form-control" name="nombre" required>
+        </div>
+        <div class="field">
+          <label>Precio *</label>
+          <input class="form-control" name="precio" type="number" min="0" required>
+        </div>
+        <div class="field">
+          <label>Stock</label>
+          <input class="form-control" name="stock" type="number" min="0">
+        </div>
+        <div class="field">
+          <label>Categoría</label>
+          <input class="form-control" name="categoria">
+        </div>
+        <div class="field" style="grid-column:1/-1">
+          <label>Descripción</label>
+          <textarea class="form-control" name="descripcion" rows="4"></textarea>
+        </div>
+        <div>
+          <button class="btn" type="submit">Guardar</button>
+        </div>
+      </form>
+    </section>
+  </div>
+
+  <script src="../assets/js/core.js"></script>
+  <script src="../assets/js/seeds.js"></script>
+  <script src="../assets/js/services/ProductService.js"></script>
+  <script src="../assets/js/controllers/AdminProductNewController.js"></script>
+  <script src="../assets/js/layout-admin.js"></script>
+</body>
+</html>

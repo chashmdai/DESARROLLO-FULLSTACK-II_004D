@@ -4,19 +4,14 @@
   NB.CartService.load();
   const id = new URLSearchParams(location.search).get("id");
   const p = NB.ProductService.byId(id);
-  if (!p) { wrap.innerHTML = "<p>Producto no encontrado.</p>"; return; }
+  if (!p) { wrap.innerHTML = "<div class='container'><p>Producto no encontrado.</p></div>"; return; }
   wrap.innerHTML = `
-    <nav class="breadcrumb container">
-      <a href="./index.html">Inicio</a><span class="sep">/</span>
-      <a href="./productos.html">Productos</a><span class="sep">/</span>
-      <span>${p.nombre}</span>
-    </nav>
     <section class="container">
       <div class="grid cols-2">
-        <div class="card"><img src="${p.imagenes[0]||''}" alt="${p.nombre}"></div>
+        <div class="card"><div style="height:260px;background:rgba(255,255,255,.04);border-radius:10px"></div></div>
         <div>
           <h1 class="detail__title">${p.nombre}</h1>
-          <p>${p.descripcion}</p>
+          <p>${p.descripcion||""}</p>
           <div class="detail__price">${NB.format.price(p.precio)}</div>
           <div class="detail__qty">
             <label for="qty">Cantidad</label>
