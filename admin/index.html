@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <title>Admin — Dashboard</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="../assets/css/admin.css" rel="stylesheet">
+</head>
+<body class="admin">
+  <!-- header y aside se inyectan con layout-admin.js -->
+  <header id="admin-header"></header>
+
+  <div class="a-layout">
+    <aside id="admin-aside" class="a-aside"></aside>
+
+    <main id="admin-main" class="a-main container">
+      <nav class="breadcrumb">
+        <a href="index.html">Dashboard</a>
+        <span class="sep">/</span>
+        <span class="muted">Inicio</span>
+      </nav>
+
+      <h1>Panel general</h1>
+      <p class="muted">Bienvenido a Nexbyte v3 Admin. Este dashboard es una maqueta base para validar layout y estilos.</p>
+
+      <div class="grid" style="margin-top:12px">
+        <div class="card">
+          <div class="muted">Ventas hoy</div>
+          <h2>$0</h2>
+          <span class="badge info">demo</span>
+        </div>
+        <div class="card">
+          <div class="muted">Pedidos pendientes</div>
+          <h2>0</h2>
+          <span class="badge warn">demo</span>
+        </div>
+        <div class="card">
+          <div class="muted">Productos activos</div>
+          <h2>0</h2>
+          <span class="badge ok">demo</span>
+        </div>
+      </div>
+
+      <div class="hr"></div>
+
+      <div class="toolbar">
+        <div class="search">
+          <span>🔎</span>
+          <input type="text" placeholder="Buscar..." aria-label="Buscar" />
+        </div>
+        <span class="spacer"></span>
+        <a class="btn primary" href="producto-nuevo.html">Nuevo producto</a>
+      </div>
+
+      <div class="table-wrap">
+        <table class="table-sm">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Nombre</th>
+              <th>Precio</th>
+              <th>Stock</th>
+              <th class="right">Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>—</td>
+              <td>—</td>
+              <td>—</td>
+              <td><span class="badge">—</span></td>
+              <td class="right"><span class="muted">demo</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+    </main>
+  </div>
+
+  <div class="a-dim" aria-hidden="true"></div>
+
+  <script src="../assets/js/layout-admin.js"></script>
+  <script>
+    AX.mountLayout();
+  </script>
+</body>
+</html>
