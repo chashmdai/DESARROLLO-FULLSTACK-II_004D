@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>NexByte — Registro</title>
+  <link href="../assets/css/base.css" rel="stylesheet">
+  <link href="../assets/css/layout.css" rel="stylesheet">
+  <link href="../assets/css/components.css" rel="stylesheet">
+  <link href="../assets/css/tienda.css" rel="stylesheet">
+</head>
+<body>
+  <main class="container">
+    <h1>Registro</h1>
+    <form id="register-form" class="card grid cols-2" novalidate>
+      <div class="field">
+        <label>Nombre</label>
+        <input class="form-control" name="nombre" required>
+      </div>
+      <div class="field">
+        <label>Teléfono</label>
+        <input class="form-control" name="telefono">
+      </div>
+      <div class="field">
+        <label>Email</label>
+        <input class="form-control" name="email">
+      </div>
+      <div class="field">
+        <label>Confirmar Email</label>
+        <input class="form-control" name="email2">
+      </div>
+      <div class="field">
+        <label>Contraseña</label>
+        <input class="form-control" type="password" name="pass">
+      </div>
+      <div class="field">
+        <label>Confirmar Contraseña</label>
+        <input class="form-control" type="password" name="pass2">
+      </div>
+      <div>
+        <button class="btn" type="submit">Registrar</button>
+      </div>
+    </form>
+  </main>
+
+  <script src="../assets/js/core.js"></script>
+  <script src="../assets/js/utils/validators.js"></script>
+  <script src="../assets/js/controllers/AuthController.js"></script>
+  <script src="../assets/js/layout.js"></script>
+</body>
+</html>
