@@ -38,7 +38,7 @@ a{ color:var(--link); text-decoration:none }
 a:hover{ color:var(--link-h) }
 
 /* Contenedor común */
-.container{ max-width:1100px; margin:0 auto; padding:0 16px }
+.container{ max-width:1240px; margin:0 auto; padding:0 16px }
 
 /* ===========================
    Topbar
