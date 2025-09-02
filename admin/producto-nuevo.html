@@ -27,14 +27,14 @@
       <form id="frm" class="form" novalidate>
         <div class="field">
           <label for="fNombre">Nombre *</label>
-          <input id="fNombre" type="text" required maxlength="120" placeholder="Ej: Teclado mecánico TKL">
+          <input id="fNombre" type="text" required minlength="2" maxlength="120" placeholder="Ej: Teclado mecánico TKL">
           <div class="help">Obligatorio. Mínimo 2 caracteres.</div>
         </div>
 
         <div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:12px">
           <div class="field">
             <label for="fPrecio">Precio (CLP) *</label>
-            <input id="fPrecio" type="number" inputmode="numeric" min="0" step="1000" required placeholder="Ej: 39990">
+            <input id="fPrecio" type="number" inputmode="numeric" min="0" step="1" required placeholder="Ej: 39990">
             <div class="help">Solo números, igual o mayor a 0.</div>
           </div>
 
@@ -133,6 +133,14 @@
 
     $frm.addEventListener('submit', (e) => {
       e.preventDefault();
+
+      // Validación nativa de HTML5 primero (required, min, step, minlength, type=url)
+      if (!$frm.checkValidity()){
+        $frm.reportValidity();
+        return;
+      }
+
+      // Reglas adicionales de negocio
       const nombre = document.getElementById('fNombre').value.trim();
       const precio = Number(document.getElementById('fPrecio').value);
       const stock  = Number(document.getElementById('fStock').value);
@@ -150,11 +158,11 @@
       if (errs.length){ showErrs(errs); return; }
       showErrs([]);
 
-      const p = DB.products.add({ nombre, precio, stock, categoria, descripcion, activo, imagen });
-
+      DB.products.add({ nombre, precio, stock, categoria, descripcion, activo, imagen });
       location.href = 'productos-listado.html';
     });
 
+    // Inicializar preview al cargar
     updatePreview();
   </script>
 </body>
