@@ -63,9 +63,17 @@
 
   function mergeProducts() {
     const cart = read();
-    const products = (w.DB && w.DB.products && w.DB.products._read)
-      ? w.DB.products._read()
-      : [];
+    let products = [];
+    try {
+      if (w.DB && w.DB.products) {
+        if (typeof w.DB.products.list === "function") {
+          products = w.DB.products.list();
+        } else if (typeof w.DB.products._read === "function") {
+          products = w.DB.products._read();
+        }
+      }
+    } catch (_) {}
+
     return cart.map(it => {
       const p = products.find(pr => String(pr.id) === String(it.id)) || null;
       return { id: String(it.id), qty: Number(it.qty) || 0, product: p };
