@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <title>Admin — Usuarios (Listado)</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="../assets/css/admin.css" rel="stylesheet">
+</head>
+<body class="admin">
+  <header id="admin-header"></header>
+
+  <div class="a-layout">
+    <aside id="admin-aside" class="a-aside"></aside>
+
+    <main id="admin-main" class="a-main container">
+      <nav class="breadcrumb">
+        <a href="index.html">Dashboard</a>
+        <span class="sep">/</span>
+        <span class="muted">Usuarios</span>
+        <span class="sep">/</span>
+        <span class="muted">Listado</span>
+      </nav>
+
+      <h1>Usuarios</h1>
+
+      <div class="toolbar">
+        <div class="search">
+          <span>🔎</span>
+          <input id="q" type="text" placeholder="Buscar por RUN, nombre, apellidos o correo…" aria-label="Buscar">
+        </div>
+        <span class="spacer"></span>
+        <a id="btnNewTop" class="btn primary" href="usuario-nuevo.html">Nuevo usuario</a>
+      </div>
+
+      <div id="empty" class="card hidden">
+        <p class="muted">No hay usuarios registrados.</p>
+        <a class="btn primary" href="usuario-nuevo.html">Crear el primero</a>
+      </div>
+
+      <div id="tableWrap" class="table-wrap hidden">
+        <table class="table-sm" id="tabla">
+          <thead>
+            <tr>
+              <th style="width:140px">RUN</th>
+              <th style="width:160px">Nombre</th>
+              <th style="width:180px">Apellidos</th>
+              <th style="width:220px">Correo</th>
+              <th style="width:140px">Teléfono</th>
+              <th style="width:140px">Región</th>
+              <th style="width:160px">Comuna</th>
+              <th>Dirección</th>
+              <th class="right" style="width:230px">Acciones</th>
+            </tr>
+          </thead>
+          <tbody id="tbody"></tbody>
+        </table>
+      </div>
+    </main>
+  </div>
+
+  <div class="a-dim" aria-hidden="true"></div>
+
+  <script src="../assets/js/usuarios.js"></script>
+  <script src="../assets/js/layout-admin.js"></script>
+  <script>
+    AX.mountLayout();
+
+    const $q = document.getElementById('q');
+    const $tbody = document.getElementById('tbody');
+    const $wrap = document.getElementById('tableWrap');
+    const $empty = document.getElementById('empty');
+    const $btnNewTop = document.getElementById('btnNewTop');
+
+    function escapeHtml(s){
+      return String(s).replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+    }
+
+    function formatRun(run){
+      const m = String(run || "").toUpperCase().match(/^(\d+)([0-9K])$/i);
+      if (!m) return run || '';
+      const body = m[1].replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+      const dv = m[2].toUpperCase();
+      return body + '-' + dv;
+    }
+
+    function row(u){
+      const run = String(u.run || '');
+      const runFmt = formatRun(run);
+      const verHref = 'usuario-mostrar.html?run=' + encodeURIComponent(run);
+      const editHref = 'usuario-editar.html?run=' + encodeURIComponent(run);
+
+      return `
+        <tr data-run="${run}">
+          <td>${escapeHtml(runFmt)}</td>
+          <td>${escapeHtml(u.nombre || '')}</td>
+          <td>${escapeHtml(u.apellidos || '')}</td>
+          <td>${escapeHtml(u.correo || '')}</td>
+          <td>${escapeHtml(u.telefono || '')}</td>
+          <td>${escapeHtml(u.region || '')}</td>
+          <td>${escapeHtml(u.comuna || '')}</td>
+          <td>${escapeHtml(u.direccion || '')}</td>
+          <td class="right">
+            <a class="btn" href="${verHref}">Ver</a>
+            <a class="btn" href="${editHref}">Editar</a>
+            <button class="btn danger" data-del>Eliminar</button>
+          </td>
+        </tr>
+      `;
+    }
+
+    function render(term){
+      const data = DB.users.list(term);
+      const has = data.length > 0;
+
+      $btnNewTop.classList.toggle('hidden', !has);
+      $wrap.classList.toggle('hidden', !has);
+      $empty.classList.toggle('hidden', has);
+
+      if (!has){ $tbody.innerHTML = ''; return; }
+
+      let html = '';
+      for (let i = 0; i < data.length; i++) html += row(data[i]);
+      $tbody.innerHTML = html;
+    }
+
+    $q.addEventListener('input', () => render($q.value.trim()));
+
+    document.addEventListener('click', (e) => {
+      const btn = e.target.closest('[data-del]');
+      if (!btn) return;
+      const tr = btn.closest('tr');
+      const run = tr?.getAttribute('data-run');
+      if (!run) return;
+
+      if (confirm('¿Eliminar usuario RUN ' + formatRun(run) + ' ?')) {
+        if (DB.users.remove(run)) {
+          tr.remove();
+          render($q.value.trim()); 
+        } else {
+          alert('No se pudo eliminar (no encontrado).');
+        }
+      }
+    });
+
+    render('');
+  </script>
+</body>
+</html>
