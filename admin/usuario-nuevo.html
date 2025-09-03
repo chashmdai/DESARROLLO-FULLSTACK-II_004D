@@ -128,13 +128,20 @@
       if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(m)) return false;
       return ALLOWED_DOMAINS.test(m);
     }
-    function formatPhone(raw){
-      const d = String(raw||"").replace(/\D/g,"");
+
+    function digitsOnly(s){ return String(s||"").replace(/\D+/g,""); }
+    function isPhoneOk(val){
+      const d = digitsOnly(val);
+      return d.length === 9 && d.startsWith("9");
+    }
+    function formatPhone(val){
+      const d = digitsOnly(val);
       if (!d) return "";
       const t = d[0]==="9" ? d : "9"+d;
       const a=t.slice(0,1), b=t.slice(1,5), c=t.slice(5,9);
       return [a,b,c].filter(Boolean).join(" ").trim();
     }
+
     function setErr(id,msg){ const el=document.getElementById(id); if(el) el.textContent=msg||""; }
     function clearErrs(){
       ["err-run","err-nombre","err-apellidos","err-correo","err-telefono",
@@ -156,7 +163,7 @@
       function fillComunas(regName){
         $comuna.innerHTML = `<option value="">Seleccione…</option>`;
         const r = data.find(x => (x.NombreRegion||x.region||x.nombre||"")===regName);
-        const comunas = r ? (r.Comunas||r.comunas||r.items||[]) : [];
+        const comunas = r ? (r.Comunas||r.comunas||r.items||r.comunas||[]) : [];
         for(const c of comunas){
           const nm=c.NombreComuna||c.comuna||c.nombre||c;
           const opt=document.createElement("option"); opt.value=opt.textContent=nm; $comuna.appendChild(opt);
@@ -168,6 +175,7 @@
 
     const $run = document.getElementById("run");
     const $tel = document.getElementById("telefono");
+
     $run.addEventListener("input",()=>{ $run.value = normRUN($run.value).replace(/[^0-9K]/g,"").slice(0,9); });
     $tel.addEventListener("input",()=>{ $tel.value = formatPhone($tel.value).slice(0,11); });
 
@@ -179,7 +187,8 @@
       const nombre=document.getElementById("nombre").value.trim();
       const apellidos=document.getElementById("apellidos").value.trim();
       const correo=document.getElementById("correo").value.trim().toLowerCase();
-      const telefono=document.getElementById("telefono").value.trim();
+      const telefonoRaw=document.getElementById("telefono").value;
+      const telefonoFmt = formatPhone(telefonoRaw);
       const pass=document.getElementById("pass").value;
       const pass2=document.getElementById("pass2").value;
       const region=document.getElementById("region").value.trim();
@@ -191,7 +200,9 @@
       if(nombre.length<2 || nombre.length>100){ setErr("err-nombre","Entre 2 y 100 caracteres."); ok=false; }
       if(apellidos.length<2 || apellidos.length>100){ setErr("err-apellidos","Entre 2 y 100 caracteres."); ok=false; }
       if(!isAllowedEmail(correo)){ setErr("err-correo","Correo inválido o dominio no permitido."); ok=false; }
-      if(telefono && !/^9\d{4}\s\d{4}$/.test(telefono)){ setErr("err-telefono","Formato: 9 XXXX XXXX."); ok=false; }
+
+      if(telefonoFmt && !isPhoneOk(telefonoFmt)){ setErr("err-telefono","Formato: 9 XXXX XXXX."); ok=false; }
+
       if(pass.length<4 || pass.length>10){ setErr("err-pass","Entre 4 y 10 caracteres."); ok=false; }
       if(pass!==pass2){ setErr("err-pass2","Las contraseñas no coinciden."); ok=false; }
       if(!region){ setErr("err-region","Selecciona una región."); ok=false; }
@@ -203,11 +214,12 @@
 
       if(!ok) return;
 
-      const okAdd = DB.users.add({ run, nombre, apellidos, correo, pass, telefono, region, comuna, direccion });
-      if (!okAdd){
-        setErr("err-run","No se pudo crear: RUN/correo en uso.");
-        return;
-      }
+      const okAdd = DB.users.add({
+        run, nombre, apellidos, correo, pass,
+        telefono: telefonoFmt, region, comuna, direccion
+      });
+      if (!okAdd){ setErr("err-run","No se pudo crear: RUN/correo en uso."); return; }
+
       location.href = "usuarios-listado.html";
     });
   </script>
