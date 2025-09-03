@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <title>Nexbyte — Contacto</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="../assets/css/tienda.css" rel="stylesheet">
+</head>
+<body>
+  <header class="site-header"></header>
+
+  <main class="container">
+    <section class="auth">
+      <div class="auth-header">
+        <h1>Contacto</h1>
+        <p class="muted">Resolvemos tus dudas.</p>
+      </div>
+
+      <form id="formContacto" class="card form" novalidate>
+        <label for="cNombre">Nombre *</label>
+        <input id="cNombre" type="text" maxlength="100" required>
+        <small id="err-cNombre" class="error" aria-live="polite"></small>
+
+        <label for="cCorreo">Correo *</label>
+        <input id="cCorreo" type="email" maxlength="100" required>
+        <small id="err-cCorreo" class="error" aria-live="polite"></small>
+
+        <label for="cMsg">Comentario *</label>
+        <textarea id="cMsg" rows="5" maxlength="500" required></textarea>
+        <small id="err-cMsg" class="error" aria-live="polite"></small>
+
+        <div id="cOk" class="badge" style="display:none">Mensaje enviado ✔</div>
+
+        <button class="btn primary" type="submit">Enviar</button>
+      </form>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">© Nexbyte v3</div>
+  </footer>
+
+  <script src="../assets/js/carrito.js"></script>
+  <script src="../assets/js/layout.js"></script>
+  <script> NB.mountSite(); </script>
+  <script src="../assets/js/validar-contacto.js"></script>
+</body>
+</html>

@@ -23,6 +23,7 @@
         <nav id="navMenu" class="nav">
           <a href="../tienda/index.html">Inicio</a>
           <a href="../tienda/productos.html">Productos</a>
+          <a href="../tienda/contacto.html">Contacto</a>
           <a href="../tienda/carrito.html">Carrito <span id="cartCount" class="badge">0</span></a>
           <a href="../tienda/login.html">Login</a>
           <a href="../tienda/registro.html">Registro</a>
@@ -55,14 +56,10 @@
     } catch(_) {}
 
     updateCartCount();
-
-    addEventListener("storage", (ev) => {
-      if (ev && ev.key === "nxv3_cart") updateCartCount();
-    });
+    addEventListener("storage", (ev) => { if (ev && ev.key === "nxv3_cart") updateCartCount(); });
   }
 
   NB.mountSite = mountSite;
   NB.updateCartCount = updateCartCount;
-
   w.NB = NB;
 })(window);

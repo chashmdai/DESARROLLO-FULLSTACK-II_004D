@@ -19,9 +19,6 @@ a:hover{ color:var(--primary-h) }
 
 .container{ max-width:1240px; margin:0 auto; padding:0 16px }
 
-/* ===========================
-   Header / Nav (inyectado por layout.js)
-   =========================== */
 header.site-header{ position:sticky; top:0; z-index:20; background:var(--card); border-bottom:1px solid var(--border) }
 .topbar{ height:var(--header-h); display:flex; align-items:center; justify-content:space-between; gap:12px }
 .brand{ font-weight:800; letter-spacing:.2px; color:inherit }
@@ -42,7 +39,6 @@ header.site-header{ position:sticky; top:0; z-index:20; background:var(--card); 
   border:1px solid var(--border); background:#fff; font-size:.85rem; color:inherit;
 }
 
-/* Responsive nav */
 @media (max-width: 860px){
   #navToggle{ display:block }
   .nav{
@@ -54,9 +50,6 @@ header.site-header{ position:sticky; top:0; z-index:20; background:var(--card); 
   .nav.open{ display:flex }
 }
 
-/* ===========================
-   Títulos / Utilidades
-   =========================== */
 h1{ font-size:2rem; margin:18px 0 12px }
 h2{ font-size:1.2rem; margin:.4rem 0 }
 .muted{ color:var(--muted) }
@@ -64,9 +57,6 @@ h2{ font-size:1.2rem; margin:.4rem 0 }
 .right{ text-align:right }
 .hidden{ display:none !important }
 
-/* ===========================
-   Toolbar (buscador y links)
-   =========================== */
 .toolbar{
   display:flex; align-items:center; gap:10px; flex-wrap:wrap;
   margin:10px 0 14px;
@@ -81,9 +71,6 @@ h2{ font-size:1.2rem; margin:.4rem 0 }
 .link-cart{ display:inline-flex; align-items:center; gap:8px }
 .link-cart .badge{ background:#e8eefc; border-color:#c7d2fe }
 
-/* ===========================
-   Grid de productos (productos.html)
-   =========================== */
 .grid{
   display:grid; gap:14px;
   grid-template-columns:repeat(auto-fill, minmax(220px, 1fr));
@@ -115,9 +102,6 @@ h2{ font-size:1.2rem; margin:.4rem 0 }
 .btn.primary:hover{ background:var(--primary-h) }
 .btn.ghost{ background:transparent }
 
-/* ===========================
-   Tarjetas / Tables / Estados (carrito.html)
-   =========================== */
 .card > p{ margin:0 }
 .table-wrap{ overflow:auto; border:1px solid var(--border); border-radius:12px; background:#fff; box-shadow:var(--shadow) }
 table{ width:100%; border-collapse:collapse; min-width:720px }
@@ -129,15 +113,9 @@ tbody td{ border-bottom:1px solid var(--border); padding:.6rem }
 tbody tr:hover{ background:#fafafa }
 .table-sm thead th, .table-sm tbody td{ padding:.45rem .5rem }
 
-/* ===========================
-   Footer
-   =========================== */
 .site-footer{ margin-top:28px; border-top:1px solid var(--border); background:#fff }
 .site-footer .container{ height:64px; display:flex; align-items:center; justify-content:center; color:var(--muted) }
 
-/* ===========================
-   Tema oscuro opcional (body.theme-dark)
-   =========================== */
 body.theme-dark{
   --bg:#0f1115; --ink:#e5e7eb; --muted:#9aa3b2; --card:#141821; --border:#222a35;
   --primary:#7aa2f7; --primary-h:#5c86ea; --shadow:0 2px 16px rgba(0,0,0,.35);
