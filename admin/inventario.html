@@ -69,6 +69,8 @@
 
 <script src="../assets/js/datos.js"></script>
 <script src="../assets/js/layout-admin.js"></script>
+<script> AX.mountLayout(); </script>
+<script src="../assets/js/inventario-admin.js"></script>
 <script>
   AX.mountLayout();
 
@@ -214,7 +216,8 @@
     URL.revokeObjectURL(a.href);
   });
 
-  // Primera carga
+  window.addEventListener('nx:products-seeded', render);
+
   render();
 </script>
 </body>

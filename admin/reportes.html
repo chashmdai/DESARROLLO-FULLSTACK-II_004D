@@ -85,6 +85,8 @@
 
 <script src="../assets/js/datos.js"></script>
 <script src="../assets/js/layout-admin.js"></script>
+<script> AX.mountLayout(); </script>
+<script src="../assets/js/reportes-admin.js"></script>
 <script>
   AX.mountLayout();
   const CLP = new Intl.NumberFormat('es-CL', { style:'currency', currency:'CLP', maximumFractionDigits:0 });
@@ -93,7 +95,7 @@
     return String(s).replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
   }
   function thumb(p){
-    if (p.imagen) return `<img src="${escapeHtml(p.imagen)}" alt="" style="width:64px;height:64px;object-fit:cover;border-radius:8px" onerror="this.style.display='none'>`;
+    if (p.imagen) return `<img src="${escapeHtml(p.imagen)}" alt="" style="width:64px;height:64px;object-fit:cover;border-radius:8px" onerror="this.style.display='none'">`;
     return `<div class="muted" style="width:64px;height:64px;border:1px solid #e5e7eb;border-radius:8px;display:flex;align-items:center;justify-content:center">—</div>`;
   }
 
@@ -199,6 +201,8 @@
     a.click();
     URL.revokeObjectURL(a.href);
   }
+
+  window.addEventListener('nx:products-seeded', render);
 
   render();
 </script>
