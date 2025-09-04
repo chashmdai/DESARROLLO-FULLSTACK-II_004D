@@ -29,7 +29,7 @@
           <input id="q" type="text" placeholder="Buscar por id, nombre o categoría…" aria-label="Buscar">
         </div>
         <span class="spacer"></span>
-        <a id="btnNewTop" class="btn primary" href="producto-nuevo.html">Nuevo producto</a>
+        <a class="btn primary" href="producto-nuevo.html">Nuevo producto</a>
       </div>
 
       <div id="empty" class="card hidden">
@@ -37,16 +37,17 @@
         <a class="btn primary" href="producto-nuevo.html">Crear el primero</a>
       </div>
 
-      <div id="tableWrap" class="table-wrap hidden">
+      <div id="wrap" class="table-wrap hidden">
         <table class="table-sm" id="tabla">
           <thead>
             <tr>
-              <th style="width:90px">ID</th>
+              <th style="width:84px">Img</th>
               <th>Nombre</th>
-              <th style="width:140px">Precio</th>
-              <th style="width:90px">Stock</th>
-              <th style="width:120px">Estado</th>
-              <th class="right" style="width:230px">Acciones</th>
+              <th style="width:160px">Categoría</th>
+              <th style="width:120px">Precio</th>
+              <th style="width:100px">Stock</th>
+              <th style="width:100px">Activo</th>
+              <th class="right" style="width:240px">Acciones</th>
             </tr>
           </thead>
           <tbody id="tbody"></tbody>
@@ -63,52 +64,71 @@
     AX.mountLayout();
 
     const $q = document.getElementById('q');
-    const $tbody = document.getElementById('tbody');
-    const $wrap = document.getElementById('tableWrap');
     const $empty = document.getElementById('empty');
-    const $btnNewTop = document.getElementById('btnNewTop');
+    const $wrap = document.getElementById('wrap');
+    const $tbody = document.getElementById('tbody');
 
-    const CLP = new Intl.NumberFormat('es-CL', { style: 'currency', currency: 'CLP', maximumFractionDigits: 0 });
+    const CLP = new Intl.NumberFormat('es-CL', { style:'currency', currency:'CLP', maximumFractionDigits:0 });
 
-    function badgeEstado(p) {
-      if (p.activo && Number(p.stock) > 0) return '<span class="badge ok">Activo</span>';
-      if (Number(p.stock) <= 0) return '<span class="badge warn">Sin stock</span>';
-      return '<span class="badge">Inactivo</span>';
+    function escapeHtml(s){
+      return String(s).replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
     }
 
-    function row(p) {
+    function thumb(p){
+      if (p && p.imagen){
+        const url = escapeHtml(p.imagen);
+        return `<img src="${url}" alt="" style="width:64px;height:64px;object-fit:cover;border-radius:8px" onerror="this.style.display='none'">`;
+      }
+      return `<div class="muted" style="width:64px;height:64px;border:1px solid #e5e7eb;border-radius:8px;display:flex;align-items:center;justify-content:center">—</div>`;
+    }
+
+    function row(p){
+      const id = p.id;
+      const editar = `producto-editar.html?id=${encodeURIComponent(id)}`;
+      const ver = `producto-mostrar.html?id=${encodeURIComponent(id)}`;
+      const activo = p.activo ? '<span class="badge">Sí</span>' : '<span class="badge" style="background:#fee2e2;border-color:#fecaca">No</span>';
       return `
-        <tr data-id="${p.id}">
-          <td>${p.id}</td>
-          <td>${escapeHtml(p.nombre || '')}</td>
+        <tr data-id="${id}">
+          <td>${thumb(p)}</td>
+          <td>
+            <div style="font-weight:600">${escapeHtml(p.nombre || '')}</div>
+            <div class="muted" style="font-size:.9rem">#${escapeHtml(String(id))}</div>
+          </td>
+          <td>${escapeHtml(p.categoria || '—')}</td>
           <td>${CLP.format(Number(p.precio || 0))}</td>
-          <td>${Number(p.stock || 0)}</td>
-          <td>${badgeEstado(p)}</td>
+          <td>${escapeHtml(String(p.stock ?? 0))}</td>
+          <td>${activo}</td>
           <td class="right">
-            <a class="btn" href="producto-mostrar.html?id=${encodeURIComponent(p.id)}">Ver</a>
-            <a class="btn" href="producto-editar.html?id=${encodeURIComponent(p.id)}">Editar</a>
+            <a class="btn" href="${ver}">Ver</a>
+            <a class="btn" href="${editar}">Editar</a>
             <button class="btn danger" data-del>Eliminar</button>
           </td>
         </tr>
       `;
     }
 
-    function escapeHtml(s){
-      return String(s).replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+    function getData(){
+      try { return (DB && DB.products && DB.products.list) ? DB.products.list() : []; }
+      catch { return []; }
     }
 
     function render(term){
-      const data = DB.products.list(term);
-      const has = data.length > 0;
+      const all = getData();
+      const text = String(term || '').toLowerCase().trim();
 
-      $btnNewTop.classList.toggle('hidden', !has);
-      $wrap.classList.toggle('hidden', !has);
+      const data = !text ? all : all.filter(p => {
+        const blob = [String(p.id||''), p.nombre||'', p.categoria||''].join(' ').toLowerCase();
+        return blob.includes(text);
+      });
+
+      const has = data.length > 0;
       $empty.classList.toggle('hidden', has);
+      $wrap.classList.toggle('hidden', !has);
 
       if (!has){ $tbody.innerHTML = ''; return; }
 
       let html = '';
-      for (let i=0;i<data.length;i++){ html += row(data[i]); }
+      for (let i=0;i<data.length;i++) html += row(data[i]);
       $tbody.innerHTML = html;
     }
 
@@ -120,12 +140,18 @@
       const tr = btn.closest('tr');
       const id = tr?.getAttribute('data-id');
       if (!id) return;
+
       if (confirm('¿Eliminar producto #' + id + '?')) {
-        if (DB.products.remove(id)) {
-          tr.remove();
-          render($q.value);
-        } else {
-          alert('No se pudo eliminar (no encontrado).');
+        try {
+          const ok = DB && DB.products && DB.products.remove ? DB.products.remove(id) : false;
+          if (ok) {
+            tr.remove();
+            render($q.value);
+          } else {
+            alert('No se pudo eliminar (no encontrado).');
+          }
+        } catch {
+          alert('Ocurrió un error al eliminar.');
         }
       }
     });
