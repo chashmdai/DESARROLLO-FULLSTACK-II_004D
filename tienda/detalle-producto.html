@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <title>Tienda — Detalle de producto</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="../assets/css/tienda.css" rel="stylesheet">
+</head>
+<body>
+  <header class="site-header"></header>
+
+  <main class="container">
+    <nav class="breadcrumb">
+      <a href="index.html">Inicio</a>
+      <span class="sep">/</span>
+      <a href="productos.html">Productos</a>
+      <span class="sep">/</span>
+      <span class="muted">Detalle</span>
+    </nav>
+
+    <section id="notFound" class="card hidden">
+      <p class="error">No encontramos este producto.</p>
+      <a class="btn" href="productos.html">Volver a productos</a>
+    </section>
+
+    <section id="view" class="card hidden">
+      <div class="grid" style="grid-template-columns: minmax(260px, 420px) 1fr; gap: 16px">
+        <div class="p-gallery">
+          <div class="p-media-lg">
+            <img id="pImg" alt="Imagen del producto" style="max-width:100%;max-height:360px;display:none">
+            <div id="pImgNone" class="muted" style="width:100%;height:360px;border:1px solid #e5e7eb;border-radius:8px;display:flex;align-items:center;justify-content:center">Sin imagen</div>
+          </div>
+        </div>
+
+        <div class="p-info">
+          <div class="muted" id="pCat">—</div>
+          <h1 id="pName" style="margin:.2rem 0 0 0">—</h1>
+
+          <div style="display:flex;align-items:center;gap:10px;margin:.4rem 0">
+            <div id="pPrice" class="p-price">—</div>
+            <span id="pStock" class="badge">—</span>
+            <span class="muted">#<span id="pId">—</span></span>
+          </div>
+
+          <p id="pDesc" style="margin:.4rem 0 1rem 0">—</p>
+
+          <div id="buyZone" class="p-actions">
+            <div class="qty">
+              <button class="qty-btn" id="btnDec">-</button>
+              <input type="number" id="qty" class="qty-input" value="1" min="1" step="1" aria-label="Cantidad">
+              <button class="qty-btn" id="btnInc">+</button>
+            </div>
+            <button id="btnAdd" class="btn primary">Agregar al carrito</button>
+          </div>
+
+          <div id="noBuy" class="muted hidden">Este producto no está disponible.</div>
+
+          <div style="margin-top:12px">
+            <a class="btn" href="productos.html">Volver a productos</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">© Nexbyte v3</div>
+  </footer>
+
+  <script src="../assets/js/datos.js"></script>
+  <script src="../assets/js/layout.js"></script>
+  <script> NB.mountSite(); </script>
+  <script src="../assets/js/detalle-producto.js"></script>
+</body>
+</html>
