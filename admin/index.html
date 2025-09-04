@@ -23,6 +23,7 @@
       <h1>Panel general</h1>
       <p class="muted">Bienvenido a Nexbyte v3 Admin. Este dashboard es una maqueta base para validar layout y estilos.</p>
 
+      <!-- KPIs (igual que antes) -->
       <div class="grid" style="margin-top:12px">
         <div class="card">
           <div class="muted">Ventas hoy</div>
@@ -43,6 +44,45 @@
 
       <div class="hr"></div>
 
+      <!-- ACCESOS RÁPIDOS (NUEVO): enlaces reales a módulos -->
+      <section>
+        <h2 style="margin:0 0 .6rem 0">Accesos rápidos</h2>
+        <div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:14px">
+          <div class="card" style="display:flex;flex-direction:column;gap:8px">
+            <div style="font-weight:600">🛒 Productos</div>
+            <div class="muted">Administración de productos.</div>
+            <div style="display:flex;gap:8px;flex-wrap:wrap">
+              <a class="btn" href="productos-listado.html">Listado</a>
+              <a class="btn" href="producto-nuevo.html">Nuevo</a>
+            </div>
+          </div>
+
+          <div class="card" style="display:flex;flex-direction:column;gap:8px">
+            <div style="font-weight:600">🧑‍💻 Usuarios</div>
+            <div class="muted">Cuentas de clientes.</div>
+            <div style="display:flex;gap:8px;flex-wrap:wrap">
+              <a class="btn" href="usuarios-listado.html">Listado</a>
+              <a class="btn" href="usuario-nuevo.html">Nuevo</a>
+            </div>
+          </div>
+
+          <div class="card" style="display:flex;flex-direction:column;gap:8px">
+            <div style="font-weight:600">📦 Inventario</div>
+            <div class="muted">Ajuste rápido de stock/activo y exportación.</div>
+            <div><a class="btn" href="inventario.html">Ir a Inventario</a></div>
+          </div>
+
+          <div class="card" style="display:flex;flex-direction:column;gap:8px">
+            <div style="font-weight:600">📊 Reportes</div>
+            <div class="muted">KPIs, categorías y exportaciones.</div>
+            <div><a class="btn" href="reportes.html">Ver Reportes</a></div>
+          </div>
+        </div>
+      </section>
+
+      <div class="hr"></div>
+
+      <!-- Toolbar + tabla demo (igual que antes) -->
       <div class="toolbar">
         <div class="search">
           <span>🔎</span>
@@ -81,8 +121,6 @@
   <div class="a-dim" aria-hidden="true"></div>
 
   <script src="../assets/js/layout-admin.js"></script>
-  <script>
-    AX.mountLayout();
-  </script>
+  <script>AX.mountLayout();</script>
 </body>
 </html>
