@@ -10,29 +10,21 @@
   <header class="site-header"></header>
 
   <main class="container">
-    <h1>Productos</h1>
+    <h1 style="text-align:center;margin:6px 0 14px 0;letter-spacing:.5px">PRODUCTOS</h1>
 
-    <div class="toolbar">
-      <div class="search">
-        <span aria-hidden="true">🔎</span>
-        <input id="q" type="text" placeholder="Buscar por id, nombre o categoría…" aria-label="Buscar productos">
-      </div>
-      <span class="spacer"></span>
-      <a class="link-cart" href="./carrito.html">Ver carrito <span id="cartCountTop" class="badge">0</span></a>
-    </div>
+    <section id="empty" class="card hidden" style="margin-top:10px">
+      <p class="muted">No hay productos disponibles por ahora.</p>
+      <a class="btn" href="index.html">Volver al inicio</a>
+    </section>
 
-    <div id="empty" class="muted" style="display:none">No hay productos disponibles.</div>
-
-    <section id="grid" class="grid"></section>
+    <section id="grid" class="grid grid-products"></section>
   </main>
 
-  <footer class="site-footer">
-    <div class="container">© Nexbyte v3</div>
-  </footer>
+  <footer class="site-footer"></footer>
 
   <script src="../assets/js/datos.js"></script>
-  <script src="../assets/js/carrito.js"></script>
   <script src="../assets/js/layout.js"></script>
+  <script> NB.mountSite(); </script>
   <script src="../assets/js/productos.js"></script>
 </body>
 </html>
