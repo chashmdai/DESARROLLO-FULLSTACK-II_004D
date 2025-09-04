@@ -1,5 +1,3 @@
-// NexByte Admin Layout — header + aside + toggles
-// Clases esperadas por el CSS: a-open (móvil) / a-collapsed (desktop)
 (function (global) {
   const AX = global.AX || {};
 
@@ -8,7 +6,6 @@
     const $aside  = document.getElementById("admin-aside");
     if (!$header || !$aside) return;
 
-    // Header
     $header.innerHTML = `
       <div class="a-topbar container">
         <button class="a-burger" aria-label="Abrir menú" aria-expanded="false">☰</button>
@@ -23,7 +20,6 @@
       </div>
     `;
 
-    // Aside
     $aside.innerHTML = `
       <nav class="a-nav">
         <a class="a-link" href="index.html"><span class="i">🏠</span><span>Dashboard</span></a>
@@ -40,12 +36,12 @@
           <a class="a-link" href="usuario-nuevo.html">Nuevo</a>
         </details>
 
-        <a class="a-link" href="#"><span class="i">📦</span><span>Inventario</span></a>
-        <a class="a-link" href="#"><span class="i">📈</span><span>Reportes</span></a>
+        <!-- FIX: antes tenían href="#" -->
+        <a class="a-link" href="inventario.html"><span class="i">📦</span><span>Inventario</span></a>
+        <a class="a-link" href="reportes.html"><span class="i">📈</span><span>Reportes</span></a>
       </nav>
     `;
 
-    // Overlay móvil (si no existe)
     let $dim = document.querySelector(".a-dim");
     if (!$dim) {
       $dim = document.createElement("div");
@@ -53,7 +49,6 @@
       document.body.appendChild($dim);
     }
 
-    // Comportamiento
     const $burger   = $header.querySelector(".a-burger");
     const $collapse = $header.querySelector(".a-collapse");
     const mq = matchMedia("(max-width:1024px)");
@@ -80,7 +75,6 @@
     addEventListener("keyup", e => { if (e.key === "Escape") closeMobile(); });
     mq.addEventListener("change", closeMobile);
 
-    // Link activo
     try {
       const here = location.pathname.split("/").pop() || "index.html";
       $aside.querySelectorAll("a.a-link").forEach(a => {
