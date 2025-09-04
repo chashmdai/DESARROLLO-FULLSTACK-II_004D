@@ -10,35 +10,54 @@
   <header class="site-header"></header>
 
   <main class="container">
-    <h1>Carrito</h1>
+    <nav class="breadcrumb">
+      <a href="index.html">Inicio</a>
+      <span class="sep">/</span>
+      <a href="productos.html">Productos</a>
+      <span class="sep">/</span>
+      <span class="muted">Carrito</span>
+    </nav>
 
-    <div id="empty" class="card" style="display:none">
+    <h1>Carrito de compras</h1>
+
+    <section id="empty" class="card hidden">
       <p class="muted">Tu carrito está vacío.</p>
-      <a class="btn primary" href="./productos.html">Ir a productos</a>
-    </div>
+      <a class="btn primary" href="productos.html">Ver productos</a>
+    </section>
 
-    <div id="cartWrap" class="table-wrap" style="display:none">
-      <table class="table-sm" id="cartTable">
-        <thead>
-          <tr>
-            <th style="width:80px">Img</th>
-            <th>Producto</th>
-            <th style="width:140px">Precio</th>
-            <th style="width:120px">Cantidad</th>
-            <th style="width:140px">Total</th>
-            <th class="right" style="width:120px">Acciones</th>
-          </tr>
-        </thead>
-        <tbody id="cartBody"></tbody>
-      </table>
-    </div>
-
-    <section id="summary" class="card" style="display:none; margin-top:12px">
-      <div style="display:flex; align-items:center; gap:12px; flex-wrap:wrap">
-        <a class="btn" href="./productos.html">Seguir comprando</a>
-        <button id="btnClear" class="btn danger">Vaciar carrito</button>
+    <section id="cartWrap" class="card hidden">
+      <div class="toolbar" style="margin-bottom:10px">
+        <div class="muted"><span id="itemsCount">0</span> ítem(s)</div>
         <span class="spacer"></span>
-        <div style="font-weight:700">Subtotal: <span id="subTotal">$0</span></div>
+        <button id="btnClear" class="btn danger">Vaciar carrito</button>
+      </div>
+
+      <div class="table-wrap">
+        <table class="table-sm">
+          <thead>
+            <tr>
+              <th style="width:84px">Img</th>
+              <th>Producto</th>
+              <th style="width:140px">Precio</th>
+              <th style="width:200px">Cantidad</th>
+              <th style="width:140px">Subtotal</th>
+              <th class="right" style="width:120px">Acciones</th>
+            </tr>
+          </thead>
+          <tbody id="tbody"></tbody>
+          <tfoot>
+            <tr>
+              <td colspan="4" class="right" style="font-weight:700">Total</td>
+              <td id="total" style="font-weight:700">—</td>
+              <td></td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+
+      <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:12px">
+        <a class="btn" href="productos.html">Seguir comprando</a>
+        <a class="btn primary" id="btnCheckout" href="checkout.html">Continuar al pago</a>
       </div>
     </section>
   </main>
@@ -48,8 +67,8 @@
   </footer>
 
   <script src="../assets/js/datos.js"></script>
-  <script src="../assets/js/carrito.js"></script>
   <script src="../assets/js/layout.js"></script>
-  <script src="../assets/js/carrito-pagina.js"></script>
+  <script> NB.mountSite(); </script>
+  <script src="../assets/js/carrito.js"></script>
 </body>
 </html>
