@@ -1,65 +1,93 @@
 (function (w) {
-  const NB = w.NB || {};
+  const NB = w.NB || (w.NB = {});
+  const LS_CART = "nxv3_cart";
 
-  function getCartCount() {
-    try { return (w.Cart && typeof w.Cart.count === "function") ? w.Cart.count() : 0; }
-    catch { return 0; }
+  function readCart() {
+    try { return JSON.parse(localStorage.getItem(LS_CART) || "[]"); }
+    catch { return []; }
+  }
+  function cartSize(arr) {
+    let s = 0;
+    for (let i = 0; i < arr.length; i++) s += Number(arr[i].qty || 0);
+    return s;
   }
 
-  function updateCartCount() {
-    const el = document.getElementById("cartCount");
-    if (!el) return;
-    el.textContent = String(getCartCount());
+  NB.updateCartBadge = function () {
+    const badge = document.getElementById("nbCart");
+    if (!badge) return;
+    badge.textContent = String(cartSize(readCart()));
+  };
+
+  function buildFooterCats() {
+    try {
+      const list = (w.DB && w.DB.products && w.DB.products.list) ? w.DB.products.list() : [];
+      const map = {};
+      list.forEach(p => {
+        const c = (p.categoria || "Otros").trim();
+        map[c] = (map[c] || 0) + 1;
+      });
+      const cats = Object.entries(map).sort((a,b)=>b[1]-a[1]).slice(0,3);
+      if (!cats.length) return '';
+      return cats.map(([c]) => `<a href="productos.html">${escapeHtml(c)}</a>`).join(" | ");
+    } catch { return ''; }
   }
+  function escapeHtml(s){ return String(s??'').replace(/[&<>"']/g,m=>({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[m])); }
 
-  function mountSite() {
-    const $header = document.querySelector("header.site-header");
-    if (!$header) return;
-
-    $header.innerHTML = `
-      <div class="container topbar">
-        <a class="brand" href="../tienda/index.html">Nexbyte</a>
-        <button id="navToggle" aria-label="Abrir menú" aria-expanded="false">☰</button>
-        <nav id="navMenu" class="nav">
-          <a href="../tienda/index.html">Inicio</a>
-          <a href="../tienda/productos.html">Productos</a>
-          <a href="../tienda/contacto.html">Contacto</a>
-          <a href="../tienda/carrito.html">Carrito <span id="cartCount" class="badge">0</span></a>
-          <a href="../tienda/login.html">Login</a>
-          <a href="../tienda/registro.html">Registro</a>
-        </nav>
-      </div>
-    `;
-
-    const $toggle = document.getElementById("navToggle");
-    const $menu = document.getElementById("navMenu");
-    if ($toggle && $menu) {
-      $toggle.addEventListener("click", () => {
-        const open = !$menu.classList.contains("open");
-        $menu.classList.toggle("open", open);
-        $toggle.setAttribute("aria-expanded", open ? "true" : "false");
-      });
-      $menu.addEventListener("click", (e) => {
-        const a = e.target.closest("a");
-        if (!a) return;
-        $menu.classList.remove("open");
-        $toggle.setAttribute("aria-expanded", "false");
-      });
+  NB.mountSite = function () {
+    const $h = document.querySelector(".site-header");
+    if ($h) {
+      $h.innerHTML = `
+        <div class="container nb-bar">
+          <a class="nb-brand" href="index.html"><span class="nb-logo">▣</span> <span>Nexbyte</span></a>
+          <nav class="nb-nav">
+            <a href="index.html">Home</a>
+            <a href="productos.html">Productos</a>
+            <a href="nosotros.html">Nosotros</a>
+            <a href="blogs.html">Blogs</a>
+            <a href="contacto.html">Contacto</a>
+          </nav>
+          <div class="nb-actions">
+            <a href="login.html" class="nb-link">Iniciar sesión</a>
+            <span class="sep">|</span>
+            <a href="registro.html" class="nb-link">Registrar usuario</a>
+            <a href="carrito.html" class="nb-cart" aria-label="Carrito">🛒 <span id="nbCart" class="pill">0</span></a>
+          </div>
+        </div>
+      `;
     }
 
-    try {
-      const here = location.pathname.split("/").pop();
-      document.querySelectorAll("#navMenu a").forEach(a => {
-        const href = a.getAttribute("href") || "";
-        if (href.endsWith(here)) a.classList.add("active");
-      });
-    } catch(_) {}
+    // Footer
+    const $f = document.querySelector(".site-footer");
+    if ($f) {
+      $f.innerHTML = `
+        <div class="container nb-footer">
+          <div class="nb-pay">
+            <span class="muted">Site Name</span>
+            <div class="nb-pay-icons" aria-hidden="true">
+              <span class="pay pay-visa">💳</span>
+              <span class="pay pay-mc">💳</span>
+              <span class="pay pay-am">💳</span>
+            </div>
+          </div>
+          <div class="nb-cats">
+            ${buildFooterCats() || '<a href="productos.html">Category X</a> | <a href="productos.html">Category Y</a> | <a href="productos.html">Category Z</a>'}
+          </div>
+          <form class="nb-news" onsubmit="event.preventDefault(); alert('¡Gracias! (demo)');">
+            <label class="muted" for="newsEmail">Únete al newsletter</label>
+            <div class="nb-news-row">
+              <input id="newsEmail" type="email" placeholder="Enter Email" maxlength="100" />
+              <button type="submit" class="btn">Suscribirse</button>
+            </div>
+          </form>
+        </div>
+      `;
+    }
 
-    updateCartCount();
-    addEventListener("storage", (ev) => { if (ev && ev.key === "nxv3_cart") updateCartCount(); });
-  }
-
-  NB.mountSite = mountSite;
-  NB.updateCartCount = updateCartCount;
-  w.NB = NB;
+    NB.updateCartBadge();
+    w.addEventListener("nx:cart-changed", NB.updateCartBadge);
+    w.addEventListener("nx:products-seeded", () => {
+      const $f2 = document.querySelector(".nb-cats");
+      if ($f2) $f2.innerHTML = buildFooterCats();
+    });
+  };
 })(window);
