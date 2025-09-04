@@ -1,37 +1,55 @@
-(function(){
-  const LS = "nxv3_contact_msgs";
-  const ALLOWED_DOMAINS = /(duoc\.cl|profesor\.duoc\.cl|gmail\.com)$/i;
+(function () {
+  const $form = document.getElementById("form-contacto");
+  if (!$form) return;
 
-  function read(){ try{ return JSON.parse(localStorage.getItem(LS)||"[]"); }catch{ return []; } }
-  function write(a){ localStorage.setItem(LS, JSON.stringify(a)); }
-  function emailOk(s){
-    if (!s || s.length>100) return false;
-    const m=s.trim().toLowerCase();
-    if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(m)) return false;
-    return ALLOWED_DOMAINS.test(m);
+  const $nombre = document.getElementById("c_nombre");
+  const $email  = document.getElementById("c_email");
+  const $msg    = document.getElementById("c_msg");
+  const $ok     = document.getElementById("c_success");
+
+  const EMAIL_RE = /^[^@\s]+@(duoc\.cl|profesor\.duoc\.cl|gmail\.com)$/i;
+
+  function err(el, msg){
+    el.setCustomValidity(msg || "");
+    if (!msg) return;
+    el.reportValidity();
   }
-  function setErr(id,msg){ const el=document.getElementById(id); if(el) el.textContent=msg||""; }
 
-  document.getElementById("formContacto").addEventListener("submit",(e)=>{
-    e.preventDefault();
-    setErr("err-cNombre",""); setErr("err-cCorreo",""); setErr("err-cMsg","");
-    document.getElementById("cOk").style.display="none";
+  function validate(){
+    if (!$nombre.value.trim()) { err($nombre, "Nombre requerido"); return false; }
+    if ($nombre.value.trim().length > 100) { err($nombre, "Máximo 100 caracteres"); return false; }
+    err($nombre, "");
 
-    const nombre=document.getElementById("cNombre").value.trim();
-    const correo=document.getElementById("cCorreo").value.trim().toLowerCase();
-    const msg=document.getElementById("cMsg").value.trim();
+    const e = $email.value.trim();
+    if (!e) { err($email, "Correo requerido"); return false; }
+    if (e.length > 100) { err($email, "Máximo 100 caracteres"); return false; }
+    if (!EMAIL_RE.test(e)) { err($email, "Dominio no permitido"); return false; }
+    err($email, "");
 
-    let ok=true;
-    if(!nombre || nombre.length>100){ setErr("err-cNombre","Nombre requerido (máx. 100)."); ok=false; }
-    if(!emailOk(correo)){ setErr("err-cCorreo","Solo se permite @duoc.cl, @profesor.duoc.cl o @gmail.com (máx. 100)."); ok=false; }
-    if(!msg || msg.length>500){ setErr("err-cMsg","Comentario requerido (máx. 500)."); ok=false; }
-    if(!ok) return;
+    const m = $msg.value.trim();
+    if (!m) { err($msg, "Comentario requerido"); return false; }
+    if (m.length > 500) { err($msg, "Máximo 500 caracteres"); return false; }
+    err($msg, "");
 
-    const arr=read();
-    arr.push({ nombre, correo, msg, ts:Date.now() });
-    write(arr);
+    return true;
+  }
 
-    document.getElementById("cOk").style.display="";
-    e.target.reset();
+  $form.addEventListener("submit", (ev) => {
+    ev.preventDefault();
+    if (!validate()) return;
+
+    try {
+      window.DB && DB.messages && DB.messages.add({
+        nombre: $nombre.value.trim(),
+        email:  $email.value.trim().toLowerCase(),
+        mensaje:$msg.value.trim()
+      });
+      $ok.classList.remove("hidden");
+      $form.reset();
+      setTimeout(()=> $ok.classList.add("hidden"), 2500);
+    } catch (e) {
+      alert("No se pudo enviar el mensaje. Intenta nuevamente.");
+      console.error(e);
+    }
   });
 })();

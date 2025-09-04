@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
   <meta charset="utf-8">
-  <title>Nexbyte — Contacto</title>
+  <title>Tienda — Contacto</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link href="../assets/css/tienda.css" rel="stylesheet">
 </head>
@@ -10,37 +10,51 @@
   <header class="site-header"></header>
 
   <main class="container">
-    <section class="auth">
-      <div class="auth-header">
-        <h1>Contacto</h1>
-        <p class="muted">Resolvemos tus dudas.</p>
+    <section style="text-align:center;margin:20px 0">
+      <img alt="" src="https://images.unsplash.com/photo-1515378791036-0648a3ef77b2?q=80&w=800&auto=format&fit=crop"
+           style="width:220px;height:120px;object-fit:cover;border:1px solid #e5e7eb;border-radius:6px;margin:0 auto 8px">
+      <h1 style="margin:0">nombre empresa</h1>
+    </section>
+
+    <form id="form-contacto" class="card" novalidate style="max-width:720px;margin:0 auto">
+      <div class="card" style="margin:-14px -14px 12px -14px;background:#f3f4f6;border-bottom:1px solid #e5e7eb">
+        <h2 style="margin:0">FORMULARIO DE CONTACTOS</h2>
       </div>
 
-      <form id="formContacto" class="card form" novalidate>
-        <label for="cNombre">Nombre *</label>
-        <input id="cNombre" type="text" maxlength="100" required>
-        <small id="err-cNombre" class="error" aria-live="polite"></small>
+      <label for="c_nombre">Nombre completo *</label>
+      <input id="c_nombre" name="c_nombre" type="text" maxlength="100" placeholder="Ej: Benjamín Soto" required>
 
-        <label for="cCorreo">Correo *</label>
-        <input id="cCorreo" type="email" maxlength="100" required>
-        <small id="err-cCorreo" class="error" aria-live="polite"></small>
+      <label for="c_email" style="margin-top:10px">Correo *</label>
+      <input
+        id="c_email"
+        name="c_email"
+        type="email"
+        maxlength="100"
+        placeholder="usuario@duoc.cl"
+        required
+        pattern="^[^@\\s]+@(duoc\\.cl|profesor\\.duoc\\.cl|gmail\\.com)$"
+      >
+      <div class="muted" style="margin-top:-6px">
+        Dominios permitidos: <strong>@duoc.cl</strong>, <strong>@profesor.duoc.cl</strong>, <strong>@gmail.com</strong>
+      </div>
 
-        <label for="cMsg">Comentario *</label>
-        <textarea id="cMsg" rows="5" maxlength="500" required></textarea>
-        <small id="err-cMsg" class="error" aria-live="polite"></small>
+      <label for="c_msg" style="margin-top:10px">Contenido *</label>
+      <textarea id="c_msg" name="c_msg" rows="6" maxlength="500" placeholder="Escríbenos tu mensaje…" required></textarea>
+      <div class="muted" style="margin-top:-6px">Máximo 500 caracteres.</div>
 
-        <div id="cOk" class="badge" style="display:none">Mensaje enviado ✔</div>
+      <div class="toolbar" style="justify-content:center;margin-top:16px">
+        <button type="submit" class="btn primary">Enviar mensaje</button>
+      </div>
 
-        <button class="btn primary" type="submit">Enviar</button>
-      </form>
-    </section>
+      <p id="c_success" class="muted hidden" style="text-align:center;margin-top:6px">
+        ¡Gracias! Tu mensaje fue enviado.
+      </p>
+    </form>
   </main>
 
-  <footer class="site-footer">
-    <div class="container">© Nexbyte v3</div>
-  </footer>
+  <footer class="site-footer"></footer>
 
-  <script src="../assets/js/carrito.js"></script>
+  <script src="../assets/js/mensajes.js"></script>
   <script src="../assets/js/layout.js"></script>
   <script> NB.mountSite(); </script>
   <script src="../assets/js/validar-contacto.js"></script>
