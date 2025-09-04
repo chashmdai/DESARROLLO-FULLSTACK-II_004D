@@ -39,6 +39,9 @@
         <!-- FIX: antes tenían href="#" -->
         <a class="a-link" href="inventario.html"><span class="i">📦</span><span>Inventario</span></a>
         <a class="a-link" href="reportes.html"><span class="i">📈</span><span>Reportes</span></a>
+
+        <!-- NUEVO: módulo de contactos -->
+        <a class="a-link" href="contactos.html"><span class="i">✉️</span><span>Contactos</span></a>
       </nav>
     `;
 
