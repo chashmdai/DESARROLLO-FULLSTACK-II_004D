@@ -6,45 +6,54 @@
     const $aside  = document.getElementById("admin-aside");
     if (!$header || !$aside) return;
 
+    // Topbar sobrio
     $header.innerHTML = `
       <div class="a-topbar container">
-        <button class="a-burger" aria-label="Abrir menú" aria-expanded="false">☰</button>
-        <div class="a-brand">
-          <span class="i">🧩</span><span>Admin Nexbyte</span>
-        </div>
-        <div class="a-actions">
-          <button class="a-icon" title="Notificaciones">🔔</button>
-          <button class="a-icon" title="Perfil">👤</button>
-          <button class="a-icon a-collapse" title="Colapsar menú">⇤</button>
-        </div>
+        <button class="a-burger" aria-label="Abrir menú" aria-expanded="false">
+          <span style="display:inline-block;width:18px;height:2px;background:#cfe3ff;box-shadow:0 6px 0 #cfe3ff,0 -6px 0 #cfe3ff;border-radius:2px"></span>
+        </button>
+        <div class="a-brand">Admin Nexbyte</div>
+        <div class="spacer"></div>
       </div>
     `;
 
-    $aside.innerHTML = `
-      <nav class="a-nav">
-        <a class="a-link" href="index.html"><span class="i">🏠</span><span>Dashboard</span></a>
+    // Helper para generar iniciales (2 letras)
+    const abbr = (txt) => {
+      const w = String(txt || '').trim().split(/\s+/);
+      if (!w.length) return '';
+      if (w.length === 1) return (w[0].slice(0,2)).toUpperCase();
+      return (w[0][0] + w[1][0]).toUpperCase();
+    };
 
-        <details>
-          <summary><span class="i">🛒</span><span>Productos</span></summary>
-          <a class="a-link" href="productos-listado.html">Listado</a>
-          <a class="a-link" href="producto-nuevo.html">Nuevo</a>
-        </details>
+    // Define las entradas del menú (sin emojis)
+    const ITEMS = [
+      { href: 'index.html',            label: 'Dashboard',      group: 'Gestión' },
+      { href: 'productos-listado.html',label: 'Productos',       group: 'Gestión' },
+      { href: 'usuarios-listado.html', label: 'Usuarios',        group: 'Gestión' },
+      { href: 'inventario.html',       label: 'Inventario' },
+      { href: 'reportes.html',         label: 'Reportes' },
+      { href: 'contactos.html',        label: 'Contactos',       group: 'Comunicaciones' },
+    ];
 
-        <details>
-          <summary><span class="i">🙍</span><span>Usuarios</span></summary>
-          <a class="a-link" href="usuarios-listado.html">Listado</a>
-          <a class="a-link" href="usuario-nuevo.html">Nuevo</a>
-        </details>
+    // Render del aside
+    let lastGroup = null;
+    const linksHtml = ITEMS.map(it => {
+      const g = (it.group && it.group !== lastGroup)
+        ? `<div class="group-title">${it.group}</div>` : '';
+      lastGroup = it.group || lastGroup;
+      const ico = abbr(it.label);
+      return `
+        ${g}
+        <a class="a-link" href="${it.href}" title="${it.label}">
+          <span class="ico" aria-hidden="true">${ico}</span>
+          <span class="label">${it.label}</span>
+        </a>
+      `;
+    }).join('');
 
-        <!-- FIX: antes tenían href="#" -->
-        <a class="a-link" href="inventario.html"><span class="i">📦</span><span>Inventario</span></a>
-        <a class="a-link" href="reportes.html"><span class="i">📈</span><span>Reportes</span></a>
+    $aside.innerHTML = `<nav class="a-nav">${linksHtml}</nav>`;
 
-        <!-- NUEVO: módulo de contactos -->
-        <a class="a-link" href="contactos.html"><span class="i">✉️</span><span>Contactos</span></a>
-      </nav>
-    `;
-
+    // Dim para móvil
     let $dim = document.querySelector(".a-dim");
     if (!$dim) {
       $dim = document.createElement("div");
@@ -52,15 +61,13 @@
       document.body.appendChild($dim);
     }
 
-    const $burger   = $header.querySelector(".a-burger");
-    const $collapse = $header.querySelector(".a-collapse");
+    const $burger = $header.querySelector(".a-burger");
     const mq = matchMedia("(max-width:1024px)");
-
     const isMobile = () => mq.matches;
 
     function closeMobile() {
       document.body.classList.remove("a-open");
-      $burger.setAttribute("aria-expanded", "false");
+      $burger.setAttribute("aria-expanded","false");
     }
 
     function toggleMenu() {
@@ -68,26 +75,23 @@
         const open = document.body.classList.toggle("a-open");
         $burger.setAttribute("aria-expanded", open ? "true" : "false");
       } else {
+        // En desktop, colapsa/expande
         document.body.classList.toggle("a-collapsed");
       }
     }
 
     $burger.addEventListener("click", toggleMenu);
-    $collapse.addEventListener("click", () => document.body.classList.toggle("a-collapsed"));
     $dim.addEventListener("click", closeMobile);
     addEventListener("keyup", e => { if (e.key === "Escape") closeMobile(); });
     mq.addEventListener("change", closeMobile);
 
+    // Activo actual
     try {
       const here = location.pathname.split("/").pop() || "index.html";
       $aside.querySelectorAll("a.a-link").forEach(a => {
-        if (a.getAttribute("href") === here) {
-          a.classList.add("active");
-          const det = a.closest("details");
-          if (det) det.open = true;
-        }
+        if ((a.getAttribute("href")||"") === here) a.classList.add("active");
       });
-    } catch (_) {}
+    } catch {}
   };
 
   global.AX = AX;
