@@ -14,10 +14,8 @@
 
     <main id="admin-main" class="a-main container">
       <nav class="breadcrumb">
-        <a href="index.html">Dashboard</a>
-        <span class="sep">/</span>
-        <a href="usuarios-listado.html">Usuarios</a>
-        <span class="sep">/</span>
+        <a href="index.html">Dashboard</a><span class="sep">/</span>
+        <a href="usuarios-listado.html">Usuarios</a><span class="sep">/</span>
         <span class="muted">Ver</span>
       </nav>
 
@@ -29,7 +27,7 @@
       </section>
 
       <section id="view" class="card hidden">
-        <div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:14px">
+        <div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px">
           <div>
             <h2>Identificación</h2>
             <div class="kv"><div class="k">RUN</div><div class="v" id="u-run">—</div></div>
@@ -56,7 +54,7 @@
           </div>
         </div>
 
-        <div style="display:flex; gap:10px; margin-top:12px">
+        <div style="display:flex;gap:10px;margin-top:12px">
           <a id="btnEdit" class="btn primary" href="#">Editar</a>
           <button id="btnDelete" class="btn danger" type="button">Eliminar</button>
           <a class="btn" href="usuarios-listado.html">Volver</a>
@@ -72,60 +70,59 @@
   <script>
     AX.mountLayout();
 
-    const qs = k => new URLSearchParams(location.search).get(k);
-    const normRUN = s => String(s||"").replace(/[.\-]/g,"").trim().toUpperCase();
+    const qs=k=>new URLSearchParams(location.search).get(k);
+    const normRUN=s=>String(s||"").replace(/[.\-]/g,"").trim().toUpperCase();
     function formatRun(run){
-      const m = String(run||"").toUpperCase().match(/^(\d+)([0-9K])$/);
-      if (!m) return run||"";
-      const body = m[1].replace(/\B(?=(\d{3})+(?!\d))/g, '.');
-      return body + '-' + m[2];
+      const m=String(run||"").toUpperCase().match(/^(\d+)([0-9K])$/);
+      if(!m) return run||"";
+      const body=m[1].replace(/\B(?=(\d{3})+(?!\d))/g,'.');
+      return body+'-'+m[2];
     }
-    const digitsOnly = s => String(s||"").replace(/\D+/g,"");
+    const digitsOnly=s=>String(s||"").replace(/\D+/g,"");
     function formatPhone(v){
-      const d = digitsOnly(v); if(!d) return "";
-      const t = d[0]==="9" ? d : "9"+d;
-      const a=t.slice(0,1), b=t.slice(1,5), c=t.slice(5,9);
+      const d=digitsOnly(v); if(!d) return "";
+      const t=d[0]==="9"?d:"9"+d;
+      const a=t.slice(0,1),b=t.slice(1,5),c=t.slice(5,9);
       return [a,b,c].filter(Boolean).join(" ").trim();
     }
     function fmtDate(ts){
-      if (!ts) return "—";
-      try {
-        const d = new Date(Number(ts));
-        return d.toLocaleString();
-      } catch { return "—"; }
+      if(!ts) return "—";
+      try{ const d=new Date(Number(ts)); return d.toLocaleString(); }catch{ return "—"; }
     }
 
-    const runParam = normRUN(qs('run'));
-    const user = runParam ? DB.users.get(runParam) : null;
-
-    if (!user){
-      document.getElementById('notFound').classList.remove('hidden');
-    } else {
+    function paint(user){
       document.getElementById('view').classList.remove('hidden');
-
-      document.getElementById('u-run').textContent = formatRun(user.run || "");
-      document.getElementById('u-nombre').textContent = user.nombre || "—";
-      document.getElementById('u-apellidos').textContent = user.apellidos || "—";
-      document.getElementById('u-correo').textContent = user.correo || "—";
-      document.getElementById('u-telefono').textContent = user.telefono ? formatPhone(user.telefono) : "—";
-      document.getElementById('u-region').textContent = user.region || "—";
-      document.getElementById('u-comuna').textContent = user.comuna || "—";
-      document.getElementById('u-direccion').textContent = user.direccion || "—";
+      document.getElementById('u-run').textContent = formatRun(user.run||"");
+      document.getElementById('u-nombre').textContent = user.nombre||"—";
+      document.getElementById('u-apellidos').textContent = user.apellidos||"—";
+      document.getElementById('u-correo').textContent = user.correo||"—";
+      document.getElementById('u-telefono').textContent = user.telefono?formatPhone(user.telefono):"—";
+      document.getElementById('u-region').textContent = user.region||"—";
+      document.getElementById('u-comuna').textContent = user.comuna||"—";
+      document.getElementById('u-direccion').textContent = user.direccion||"—";
       document.getElementById('u-creado').textContent = fmtDate(user.createdAt);
 
-      const editHref = 'usuario-editar.html?run=' + encodeURIComponent(user.run);
-      document.getElementById('btnEdit').setAttribute('href', editHref);
-
-      document.getElementById('btnDelete').addEventListener('click', ()=>{
-        if (confirm('¿Eliminar usuario RUN ' + formatRun(user.run) + ' ?')) {
-          if (DB.users.remove(user.run)) {
-            location.href = 'usuarios-listado.html';
-          } else {
-            alert('No se pudo eliminar.');
-          }
+      document.getElementById('btnEdit').setAttribute('href','usuario-editar.html?run='+encodeURIComponent(user.run));
+      document.getElementById('btnDelete').addEventListener('click',()=>{
+        if(confirm('¿Eliminar usuario RUN '+formatRun(user.run)+' ?')){
+          if(window.DB?.users?.remove && DB.users.remove(user.run)) location.href='usuarios-listado.html';
+          else alert('No se pudo eliminar.');
         }
       });
     }
+    function notFound(){ document.getElementById('notFound').classList.remove('hidden'); }
+
+    function init(){
+      const runParam=normRUN(qs('run'));
+      if(!runParam){ notFound(); return; }
+      const user=window.DB?.users?.get ? DB.users.get(runParam) : null;
+      if(user==null){
+        if(!window.DB || !window.DB.users){ addEventListener('nx:users-seeded', init, {once:true}); return; }
+        notFound(); return;
+      }
+      paint(user);
+    }
+    init();
   </script>
 </body>
 </html>

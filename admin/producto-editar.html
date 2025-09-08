@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
   <meta charset="utf-8">
-  <title>Admin — Editar producto</title>
+  <title>Admin — Ver producto</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link href="../assets/css/admin.css" rel="stylesheet">
 </head>
@@ -14,91 +14,76 @@
 
     <main id="admin-main" class="a-main container">
       <nav class="breadcrumb">
-        <a href="index.html">Dashboard</a>
-        <span class="sep">/</span>
-        <a href="productos-listado.html">Productos</a>
-        <span class="sep">/</span>
-        <span class="muted">Editar</span>
+        <a href="index.html">Dashboard</a><span class="sep">/</span>
+        <a href="productos-listado.html">Productos</a><span class="sep">/</span>
+        <span class="muted">Detalle</span>
       </nav>
 
-      <h1>Editar producto</h1>
+      <h1 id="title">Producto</h1>
 
       <div id="notFound" class="card hidden">
         <p class="error">No se encontró el producto solicitado.</p>
-        <div style="display:flex; gap:10px; margin-top:8px">
+        <div style="display:flex;gap:10px;margin-top:8px">
           <a class="btn" href="productos-listado.html">Volver al listado</a>
           <a class="btn primary" href="producto-nuevo.html">Crear nuevo</a>
         </div>
       </div>
 
-      <form id="frm" class="form hidden" novalidate>
-        <input id="fId" type="hidden">
-
-        <div class="field">
-          <label for="fNombre">Nombre *</label>
-          <input id="fNombre" type="text" required minlength="2" maxlength="120" placeholder="Ej: Teclado mecánico TKL">
-          <div class="help">Obligatorio. Mínimo 2 caracteres.</div>
-        </div>
-
-        <div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:12px">
-          <div class="field">
-            <label for="fPrecio">Precio (CLP) *</label>
-            <input id="fPrecio" type="number" inputmode="numeric" min="0" step="1" required placeholder="Ej: 39990">
-            <div class="help">Solo números, igual o mayor a 0.</div>
+      <div id="view" class="card hidden">
+        <div class="grid" style="grid-template-columns:280px 1fr">
+          <div>
+            <div class="card" style="display:flex;align-items:center;justify-content:center;height:220px">
+              <img id="img" alt="Imagen del producto" style="max-height:200px;max-width:100%;display:none">
+              <span id="noImg" class="muted">Sin imagen</span>
+            </div>
           </div>
 
-          <div class="field">
-            <label for="fStock">Stock *</label>
-            <input id="fStock" type="number" inputmode="numeric" min="0" step="1" required placeholder="Ej: 10">
-            <div class="help">Entero, igual o mayor a 0.</div>
-          </div>
+          <div>
+            <div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px">
+              <div>
+                <div class="muted">ID</div>
+                <div id="fId" style="font-weight:700">—</div>
+              </div>
+              <div>
+                <div class="muted">Estado</div>
+                <div id="fEstado"><span class="badge">—</span></div>
+              </div>
+              <div>
+                <div class="muted">Precio</div>
+                <div id="fPrecio" style="font-weight:700">—</div>
+              </div>
+              <div>
+                <div class="muted">Stock</div>
+                <div id="fStock">—</div>
+              </div>
+              <div>
+                <div class="muted">Categoría</div>
+                <div id="fCat">—</div>
+              </div>
+            </div>
 
-          <div class="field">
-            <label for="fCategoria">Categoría</label>
-            <select id="fCategoria">
-              <option value="">Seleccione…</option>
-              <option>Periféricos</option>
-              <option>Audio</option>
-              <option>Almacenamiento</option>
-              <option>Componentes</option>
-              <option>Accesorios</option>
-              <option>Otros</option>
-            </select>
-          </div>
-        </div>
+            <div class="hr"></div>
 
-        <div class="field">
-          <label for="fDescripcion">Descripción</label>
-          <textarea id="fDescripcion" rows="4" placeholder="Detalles, materiales, compatibilidad, etc."></textarea>
-        </div>
+            <div>
+              <div class="muted">Nombre</div>
+              <h2 id="fNombre" style="margin:.2rem 0 0 0">—</h2>
+            </div>
 
-        <div class="grid" style="grid-template-columns:280px 1fr; gap:12px">
-          <div class="field">
-            <label for="fImagen">Imagen (URL)</label>
-            <input id="fImagen" type="url" placeholder="https://…">
-            <div class="help">Opcional. Debe ser una URL válida (http/https).</div>
-          </div>
-          <div class="field">
-            <label>Previsualización</label>
-            <div class="card" style="display:flex;align-items:center;justify-content:center;height:140px">
-              <img id="imgPrev" alt="Sin imagen" style="max-height:120px;max-width:100%;display:none">
-              <span id="noPrev" class="muted">Sin imagen</span>
+            <div style="margin-top:8px">
+              <div class="muted">Descripción</div>
+              <p id="fDesc" style="margin:.2rem 0 0 0">—</p>
+            </div>
+
+            <div class="hr"></div>
+
+            <div style="display:flex;gap:10px;flex-wrap:wrap">
+              <a id="btnEdit" class="btn" href="#">Editar</a>
+              <button id="btnDel" class="btn danger">Eliminar</button>
+              <a class="btn" href="productos-listado.html">Volver al listado</a>
             </div>
           </div>
         </div>
-
-        <div class="field" style="display:flex;align-items:center;gap:8px">
-          <input id="fActivo" type="checkbox">
-          <label for="fActivo">Producto activo</label>
-        </div>
-
-        <div id="errs" class="error hidden"></div>
-
-        <div style="display:flex;gap:10px">
-          <button class="btn primary" type="submit">Guardar cambios</button>
-          <a class="btn" href="productos-listado.html">Cancelar</a>
-        </div>
-      </form>
+      </div>
     </main>
   </div>
 
@@ -109,72 +94,56 @@
   <script>
     AX.mountLayout();
 
-    function qs(k){ return new URLSearchParams(location.search).get(k); }
-    function isHttpUrl(s){ try{ const u=new URL(s); return u.protocol==='http:'||u.protocol==='https:'; }catch{ return false; } }
-    function showErrs(list){
-      const box = document.getElementById('errs');
-      if (!list.length){ box.classList.add('hidden'); box.innerHTML=''; return; }
-      box.classList.remove('hidden');
-      box.innerHTML = list.map(e=>'• '+e).join('<br>');
+    const CLP=new Intl.NumberFormat('es-CL',{style:'currency',currency:'CLP',maximumFractionDigits:0});
+    const qs=k=>new URLSearchParams(location.search).get(k);
+    const isHttpUrl=s=>{try{const u=new URL(s);return u.protocol==='http:'||u.protocol==='https:'}catch{return false}};
+    const badgeEstado=p=>{
+      if(p.activo&&Number(p.stock)>0)return'<span class="badge ok">Activo</span>';
+      if(Number(p.stock)<=0)return'<span class="badge warn">Sin stock</span>';
+      return'<span class="badge">Inactivo</span>';
+    };
+
+    function paint(p){
+      document.getElementById('view').classList.remove('hidden');
+      document.getElementById('title').textContent='Producto #'+p.id;
+      document.getElementById('fId').textContent=p.id;
+      document.getElementById('fNombre').textContent=p.nombre||'—';
+      document.getElementById('fPrecio').textContent=CLP.format(Number(p.precio||0));
+      document.getElementById('fStock').textContent=String(Number(p.stock||0));
+      document.getElementById('fCat').textContent=p.categoria||'—';
+      document.getElementById('fEstado').innerHTML=badgeEstado(p);
+      document.getElementById('fDesc').textContent=p.descripcion?p.descripcion:'—';
+
+      const img=document.getElementById('img'),noImg=document.getElementById('noImg');
+      img.onload=()=>{img.style.display='';noImg.style.display='none'};
+      img.onerror=()=>{img.removeAttribute('src');img.style.display='none';noImg.style.display=''};
+      const url=p.imagen&&isHttpUrl(p.imagen)?p.imagen:'';
+      if(url){img.src=url}else{img.onerror()}
+      document.getElementById('btnEdit').setAttribute('href','producto-editar.html?id='+encodeURIComponent(p.id));
     }
-    function updatePreview(){
-      const url = document.getElementById('fImagen').value.trim();
-      const img = document.getElementById('imgPrev');
-      const none = document.getElementById('noPrev');
-      if (url && isHttpUrl(url)){ img.src=url; img.style.display=''; none.style.display='none'; }
-      else { img.removeAttribute('src'); img.style.display='none'; none.style.display=''; }
+
+    function notFound(){
+      document.getElementById('notFound').classList.remove('hidden');
     }
 
-    (function init(){
-      const id = qs('id');
-      const notFound = document.getElementById('notFound');
-      const frm = document.getElementById('frm');
-      if (!id){ notFound.classList.remove('hidden'); return; }
-      const p = DB.products.get(id);
-      if (!p){ notFound.classList.remove('hidden'); return; }
+    function init(){
+      const id=qs('id');
+      if(!id){notFound();return}
+      const get=window.DB?.products?.get?DB.products.get(id):null;
+      if(get==null){
+        if(!window.DB||!window.DB.products){addEventListener('nx:products-seeded',init,{once:true});return}
+        notFound();return;
+      }
+      paint(get);
 
-      frm.classList.remove('hidden');
-      document.getElementById('fId').value = p.id;
-      document.getElementById('fNombre').value = p.nombre || '';
-      document.getElementById('fPrecio').value = Number(p.precio || 0);
-      document.getElementById('fStock').value = Number(p.stock || 0);
-      document.getElementById('fCategoria').value = p.categoria || '';
-      document.getElementById('fDescripcion').value = p.descripcion || '';
-      document.getElementById('fImagen').value = p.imagen || '';
-      document.getElementById('fActivo').checked = !!p.activo;
-      updatePreview();
-    })();
-
-    document.getElementById('fImagen').addEventListener('input', updatePreview);
-
-    document.getElementById('frm').addEventListener('submit', function(e){
-      e.preventDefault();
-      const form = this;
-
-      if (!form.checkValidity()){ form.reportValidity(); return; }
-
-      const id = document.getElementById('fId').value;
-      const nombre = document.getElementById('fNombre').value.trim();
-      const precio = Number(document.getElementById('fPrecio').value);
-      const stock  = Number(document.getElementById('fStock').value);
-      const categoria = document.getElementById('fCategoria').value.trim();
-      const descripcion = document.getElementById('fDescripcion').value.trim();
-      const imagen = document.getElementById('fImagen').value.trim();
-      const activo = document.getElementById('fActivo').checked;
-
-      const errs = [];
-      if (nombre.length < 2) errs.push('El nombre debe tener al menos 2 caracteres.');
-      if (!Number.isFinite(precio) || precio < 0) errs.push('El precio debe ser un número válido mayor o igual a 0.');
-      if (!Number.isInteger(stock) || stock < 0) errs.push('El stock debe ser un entero mayor o igual a 0.');
-      if (imagen && !isHttpUrl(imagen)) errs.push('La imagen debe ser una URL http/https válida.');
-
-      if (errs.length){ showErrs(errs); return; }
-      showErrs([]);
-
-      const ok = DB.products.update(id, { nombre, precio, stock, categoria, descripcion, activo, imagen });
-      if (ok) location.href = 'productos-listado.html';
-      else alert('No se pudo actualizar: producto no encontrado.');
-    });
+      document.getElementById('btnDel').addEventListener('click',()=>{
+        if(confirm('¿Eliminar producto #'+get.id+' ?')){
+          if(DB.products.remove(get.id))location.href='productos-listado.html';
+          else alert('No se pudo eliminar (no encontrado).');
+        }
+      });
+    }
+    init();
   </script>
 </body>
 </html>
