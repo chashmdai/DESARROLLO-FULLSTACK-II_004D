@@ -171,4 +171,4 @@ Se implementan validaciones y ayudas en las vistas marcadas con formularios. Reg
 - Optimizaciones en `layout.js` y `layout-admin.js`.
 - Nuevas páginas públicas: Ayuda, Garantías, Soporte, Blogs 3–4.
 - Nuevos assets: `ui.js`, `data/home.json`, imágenes del tema.
-
+- Bug extraño: Si se elimina `docs/perrito.jpg` el proyecto no funciona
