@@ -1,4 +1,4 @@
-// Header/Footer comunes SIN fetch (funciona con file://)
+
 (function(){
   function ensureContainers(){
     if(!document.getElementById('site-header')){
