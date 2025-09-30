@@ -9,6 +9,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.HttpHeaders;
+import org.springframework.lang.NonNull;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -21,6 +22,7 @@ import java.util.Optional;
 
 @Component
 public class JwtAuthFilter extends OncePerRequestFilter {
+
   private final JwtService jwtService;
   private final UsuarioRepository usuarioRepository;
 
@@ -30,23 +32,30 @@ public class JwtAuthFilter extends OncePerRequestFilter {
   }
 
   @Override
-  protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
+  protected void doFilterInternal(@NonNull HttpServletRequest request,
+                                  @NonNull HttpServletResponse response,
+                                  @NonNull FilterChain chain)
       throws ServletException, IOException {
+
     String auth = request.getHeader(HttpHeaders.AUTHORIZATION);
+
     if (auth != null && auth.startsWith("Bearer ")) {
       String token = auth.substring(7);
       try {
         Jws<Claims> jws = jwtService.parse(token);
         String email = jws.getBody().getSubject();
+
         Optional<Usuario> u = usuarioRepository.findByEmail(email);
-        if (u.isPresent()) {
+        if (u.isPresent() && SecurityContextHolder.getContext().getAuthentication() == null) {
           String role = u.get().getRol().name();
           var authToken = new UsernamePasswordAuthenticationToken(
               email, null, List.of(new SimpleGrantedAuthority("ROLE_" + role)));
           SecurityContextHolder.getContext().setAuthentication(authToken);
         }
-      } catch (Exception ignored) { }
+      } catch (Exception ignored) {
+      }
     }
+
     chain.doFilter(request, response);
   }
 }
